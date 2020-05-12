@@ -27,6 +27,10 @@ class NewPost extends Component {
             });
     }
 
+    componentDidMount() {
+        // If unauth => this.props.history.replace('/posts/);
+    }
+
     render () {
         let redirect = null;
         if (this.state.submitted) {
