@@ -9,24 +9,33 @@ class FullPost extends Component {
         loadedPost: null
     }
 
-    deletePostHandler = () => {
-        axios.delete('/posts/' + this.props.id)
-            .then(response => {
-                console.log(response);  
-            });
-    }
-
     //Changed from ComponentDidUpdate to ComponentDidMount because its not updating rather than adding/removing component
     componentDidMount() {
+        this.loadData();
+    }
+
+    // As we are using routing the component will not update as router rerenders we need to update it manually via componentDidUpdate
+    componentDidUpdate() {
+        this.loadData();
+    }
+
+    loadData = () => {
         console.log(this.props);
         if (this.props.match.params.id) {
-            if (!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.match.params.id)) {
+            if (!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== +this.props.match.params.id)) {
                 axios.get('/posts/' + this.props.match.params.id)
                     .then(response => {
                         this.setState({loadedPost: response.data});
                     })
             }
         }
+    }
+
+    deletePostHandler = () => {
+        axios.delete('/posts/' + this.props.match.params.id)
+            .then(response => {
+                console.log(response);  
+            });
     }
 
     render () {
